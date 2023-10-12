@@ -1,6 +1,6 @@
 services:
-  php:
-    image: ghcr.io/sitepilot/php:1.x-8.1
+  php-cli:
+    image: ghcr.io/sitepilot/php-cli:1.x-8.1
     profiles:
       - donotstart
     build:
