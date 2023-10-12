@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+template pool.conf.j2 /etc/php/current/fpm/pool.d/app.conf

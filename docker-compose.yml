@@ -1,0 +1,23 @@
+services:
+  php:
+    image: ghcr.io/sitepilot/php:1.x-8.1
+    profiles:
+      - donotstart
+    build:
+      context: ./src
+      target: cli
+
+  php-fpm:
+    image: ghcr.io/sitepilot/php-fpm:1.x-8.1
+    build:
+      context: ./src
+      target: fpm
+
+  php-nginx:
+    image: ghcr.io/sitepilot/php-nginx:1.x-8.1
+    build:
+      context: ./src
+      target: nginx
+    ports:
+      - 8080:80
+      - 8443:443
