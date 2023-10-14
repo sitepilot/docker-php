@@ -72,7 +72,7 @@ EXPOSE 443
 CMD ["/runtime/bin/cmd", "/php-nginx"]
 
 # --------------- [PHP-SSH] --------------- #
-FROM cli AS php-ssh
+FROM cli AS ssh
 
 USER root
 
