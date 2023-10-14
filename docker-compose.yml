@@ -21,3 +21,17 @@ services:
     ports:
       - 8080:80
       - 8443:443
+
+  php-ssh:
+    image: ghcr.io/sitepilot/php-ssh:1.x-8.1
+    build:
+      context: ./src
+      target: php-ssh
+    ports:
+      - 8022:22
+    environment:
+      RUNTIME_UID: 1001
+      RUNTIME_GID: 1001
+      RUNTIME_USER: test-user
+      RUNTIME_GROUP: test-group
+      RUNTIME_PASSWORD: supersecret

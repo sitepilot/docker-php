@@ -70,3 +70,22 @@ EXPOSE 80
 EXPOSE 443
 
 CMD ["/runtime/bin/cmd", "/php-nginx"]
+
+# --------------- [PHP-SSH] --------------- #
+FROM cli AS php-ssh
+
+USER root
+
+ENV SSH_CONFIG_DIR="$RUNTIME_WORKDIR/.ssh"
+
+RUN $RUNTIME_BIN_DIR/install openssh-server; \
+    mkdir -p  /run/sshd; \
+    rm -rf /etc/update-motd.d/*
+
+COPY ssh /
+
+RUN $RUNTIME_BIN_DIR/finalize
+
+EXPOSE 22
+
+CMD ["/runtime/bin/cmd", "/usr/sbin/sshd", "-D"]
