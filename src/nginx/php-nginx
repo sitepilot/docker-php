@@ -7,11 +7,11 @@ source "$RUNTIME_INC_DIR/bash-functions"
 
 TRAPPED_SIGNAL=false
 
-log "Starting Nginx"
+info "Starting Nginx service"
 /usr/sbin/nginx 2>&1 &
 NGINX_PID=$!
 
-log "Starting PHP-FPM"
+info "Starting PHP-FPM service"
 /usr/sbin/php-fpm 2>&1 &
 PHP_FPM_PID=$!
 

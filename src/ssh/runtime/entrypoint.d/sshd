@@ -7,10 +7,10 @@ SSH_HOST_ECDSA_KEY=${SSH_CONFIG_DIR}/ssh_host_ecdsa_key
 SSH_HOST_ED25519_KEY=${SSH_CONFIG_DIR}/ssh_host_ed25519_key
 
 if [[ ! -f $SSH_HOST_RSA_KEY ]]; then
-  log "Generate SSHD certificates..."
+  info "Generate SSHD certificates..."
   if [ ! -f "$SSH_HOST_ECDSA_KEY" ]; then ssh-keygen -q -N "" -t ecdsa -f $SSH_HOST_ECDSA_KEY; fi
   if [ ! -f "$SSH_HOST_RSA_KEY" ]; then ssh-keygen -q -N "" -t rsa -b 4096 -f $SSH_HOST_RSA_KEY; fi
   if [ ! -f "$SSH_HOST_ED25519_KEY" ]; then ssh-keygen -q -N "" -t ed25519 -f $SSH_HOST_ED25519_KEY; fi
 fi
 
-template sshd.conf.j2 /etc/ssh/sshd_config
+template sshd.conf.tmpl /etc/ssh/sshd_config

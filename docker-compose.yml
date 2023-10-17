@@ -26,7 +26,7 @@ services:
     image: ghcr.io/sitepilot/php-ssh:1.x-8.1
     build:
       context: ./src
-      target: php-ssh
+      target: ssh
     ports:
       - 8022:22
     environment:

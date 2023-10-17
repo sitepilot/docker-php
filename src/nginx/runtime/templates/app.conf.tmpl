@@ -5,13 +5,14 @@ server {
   listen 443 http2 ssl default_server;
   listen [::]:443 http2 ssl default_server;
 
-  ssl_certificate {{ env("RUNTIME_WORKDIR") }}/ssl.crt;
-  ssl_certificate_key {{ env("RUNTIME_WORKDIR") }}/ssl.key;
   ssl_prefer_server_ciphers on;
   ssl_protocols TLSv1.2 TLSv1.3;
   ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;
 
-  root {{ env('NGINX_FILES_DIR') }}{{ env('NGINX_PUBLIC_DIR') }};
+  ssl_certificate {{ .Env.NGINX_CERTS_DIR }}/ssl.crt;
+  ssl_certificate_key {{ .Env.NGINX_CERTS_DIR }}/ssl.key;
+
+  root {{ .Env.NGINX_FILES_DIR }}/{{ default .Env.NGINX_PUBLIC_DIR "" }};
 
   index index.php index.html index.htm;
 
@@ -19,7 +20,7 @@ server {
 
   charset utf-8;
 
-  client_max_body_size {{ env('NGINX_CLIENT_MAX_BODY_SIZE', '100M') }};
+  client_max_body_size {{ default .Env.NGINX_CLIENT_MAX_BODY_SIZE "100M" }};
 
   include server.d/*.conf;
 
@@ -41,7 +42,7 @@ server {
     include        fastcgi_params;
     fastcgi_param  SCRIPT_NAME     /ping;
     fastcgi_param  SCRIPT_FILENAME /ping;
-    fastcgi_pass   {{ env('NGINX_FASTCGI_PASS', '127.0.0.1:9000') }};
+    fastcgi_pass   {{ default .Env.NGINX_FASTCGI_PASS "127.0.0.1:9000" }};
   }
 
   include location.d/*.conf;
@@ -53,6 +54,6 @@ server {
   location ~ \.php$ {
     include snippets/fastcgi-php.conf;
     fastcgi_param HTTPS $fastcgi_https if_not_empty;
-    fastcgi_pass {{ env('NGINX_FASTCGI_PASS', '127.0.0.1:9000') }};
+    fastcgi_pass {{ default .Env.NGINX_FASTCGI_PASS "127.0.0.1:9000" }};
   }
 }

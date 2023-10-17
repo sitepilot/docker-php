@@ -6,7 +6,7 @@
 
 [global]
 ; Override default pid file
-pid = {{ env('RUNTIME_RUN_DIR') }}/php-fpm.pid
+pid = {{ .Env.RUNTIME_RUN_DIR }}/php-fpm.pid
 
 ; Avoid logs being sent to syslog
 error_log = /proc/self/fd/2
@@ -60,7 +60,7 @@ clear_env = no
 ;             pm.process_idle_timeout   - The number of seconds after which
 ;                                         an idle process will be killed.
 ; Note: This value is mandatory.
-pm = {{ env('PHP_PM_CONTROL', 'dynamic') }}
+pm = {{ default .Env.PHP_PM_CONTROL "dynamic" }}
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes when pm is set to 'dynamic' or 'ondemand'.
@@ -71,22 +71,22 @@ pm = {{ env('PHP_PM_CONTROL', 'dynamic') }}
 ; forget to tweak pm.* to fit your needs.
 ; Note: Used when pm is set to 'static', 'dynamic' or 'ondemand'
 ; Note: This value is mandatory.
-pm.max_children = {{ env('PHP_PM_MAX_CHILDREN', '20') }}
+pm.max_children = {{ default .Env.PHP_PM_MAX_CHILDREN "20" }}
 
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: (min_spare_servers + max_spare_servers) / 2
-pm.start_servers = {{ env('PHP_PM_START_SERVERS', '2') }}
+pm.start_servers = {{ default .Env.PHP_PM_START_SERVERS "2" }}
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = {{ env('PHP_PM_MIN_SPARE_SERVERS', '1') }}
+pm.min_spare_servers = {{ default .Env.PHP_PM_MIN_SPARE_SERVERS "1" }}
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.max_spare_servers = {{ env('PHP_PM_MAX_SPARE_SERVERS', '3') }}
+pm.max_spare_servers = {{ default .Env.PHP_PM_MAX_SPARE_SERVERS "3" }}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Healthcheck settings
@@ -207,29 +207,3 @@ ping.path = /ping
 ; response is formatted as text/plain with a 200 response code.
 ; Default Value: pong
 ;ping.response = pong
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Server Side Up Opinionated Settings
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; We believe everything should be secure by default. Some of these settings
-; can be changed with environment variables.
-
-; Security measures
-php_admin_flag[session.cookie_secure] = true
-
-; Regional settings
-php_value[date.timezone] = {{ env('PHP_DATE_TIMEZONE', 'UTC') }}
-
-; Error reporting settings
-php_value[display_errors] = {{ env('PHP_DISPLAY_ERRORS', 'Off') }}
-php_value[display_startup_errors] = {{ env('PHP_DISPLAY_STARTUP_ERRORS', 'OFF') }}
-php_value[error_reporting] = {{ env('PHP_ERROR_REPORTING', '22527') }}
-
-; Performance settings
-php_value[memory_limit] = {{ env('PHP_MEMORY_LIMIT', '256M') }}
-php_value[max_execution_time] = {{ env('PHP_MAX_EXECUTION_TIME', '99') }}
-
-; Upload settings
-php_value[post_max_size] = {{ env('PHP_POST_MAX_SIZE', '100M') }}
-php_value[upload_max_filesize] = {{ env('PHP_UPLOAD_MAX_FILESIZE', '100M') }}

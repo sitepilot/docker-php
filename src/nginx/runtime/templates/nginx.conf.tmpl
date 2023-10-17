@@ -27,7 +27,7 @@ error_log /dev/stderr warn;
 
 # The file storing the process ID of the main process
 # Default: nginx.pid
-pid {{ env('RUNTIME_RUN_DIR') }}/nginx.pid;
+pid {{ .Env.RUNTIME_RUN_DIR }}/nginx.pid;
 
 daemon off;
 
@@ -72,7 +72,7 @@ http {
   # Include HTTP configuration.
   include conf.d/*.conf;
 
-  {%- if env("NGINX_GZIP_ENABLED", true) | to_bool %}
+  {{ if isTrue (default .Env.NGINX_GZIP_ENABLED "true") }}
 
   # Enable gzip compression.
   # Default: off
@@ -82,7 +82,7 @@ http {
   # 5 is a perfect compromise between size and CPU usage, offering about
   # 75% reduction for most ASCII files (almost identical to level 9).
   # Default: 1
-  gzip_comp_level {{ env('NGINX_GZIP_COMP_LEVEL', 5) }};
+  gzip_comp_level {{ default .Env.NGINX_GZIP_COMP_LEVEL "5" }};
 
   # Don't compress anything that's already small and unlikely to shrink much
   # if at all (the default is 20 bytes, which is bad as that usually leads to
@@ -100,7 +100,7 @@ http {
   # Avoids the issue where a non-gzip capable client (which is extremely rare
   # today) would display gibberish if their proxy gave them the gzipped version.
   # Default: off
-  gzip_vary {{ env('NGINX_GZIP_VARY', 'on') }};
+  gzip_vary {{ default .Env.NGINX_GZIP_VARY "on" }};
 
   # Compress all output labeled with one of the following MIME-types.
   # text/html is always compressed by gzip module.
@@ -136,9 +136,9 @@ http {
   # static files available. If not it should be left off as it will cause extra I/O
   # for the check. It is best if you enable this in a location{} block for
   # a specific directory, or on an individual server{} level.
-  gzip_static {{ env('NGINX_GZIP_STATIC', 'off') }};
+  gzip_static {{ default .Env.NGINX_GZIP_STATIC "off" }};
 
-  {% endif -%}
+  {{ end }}
 
   # Map forwarded proto to fastcgi https param.
   map $http_x_forwarded_proto $fastcgi_https {
