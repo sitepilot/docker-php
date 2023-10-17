@@ -8,14 +8,14 @@ ARG PHP_VERSION=8.1
 ENV RUNTIME_LOG_LEVEL=4 \
     PHP_VERSION=${PHP_VERSION}
 
-RUN rt-install gnupg2 software-properties-common less
+RUN rt-install gnupg2 software-properties-common less msmtp unzip
 
 ADD packages/php-${PHP_VERSION}.txt /tmp/packages.txt
 
 RUN add-apt-repository ppa:ondrej/php \
     && mkdir -p /etc/php/current \
     && ln -sf /etc/php/current /etc/php/${PHP_VERSION} \
-    && rt-install msmtp unzip $(cat /tmp/packages.txt) \
+    && rt-install $(cat /tmp/packages.txt) \
     && rt-rchown /etc/php/current
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
