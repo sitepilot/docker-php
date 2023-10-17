@@ -16,15 +16,13 @@ RUN add-apt-repository ppa:ondrej/php \
     && mkdir -p /etc/php/current \
     && ln -sf /etc/php/current /etc/php/${PHP_VERSION} \
     && rt-install msmtp $(cat /tmp/packages.txt) \
-    && chown -R $RUNTIME_UID:$RUNTIME_GID /etc/php/current/cli/conf.d
+    && rt-rchown /etc/php/current
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY --from=wordpress:cli-2 /usr/local/bin/wp /usr/local/bin/wp
 
-COPY cli /
-
-RUN rt-finalize
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID cli /
 
 USER $RUNTIME_UID
 
@@ -37,12 +35,10 @@ ENV RUNTIME_LOG_LEVEL=1
 
 RUN rt-install php${PHP_VERSION}-fpm libfcgi-bin \
     && ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm \
-    && chown -R $RUNTIME_UID:$RUNTIME_GID /etc/php/current/fpm \
-    && rm /etc/php/current/fpm/pool.d/www.conf
+    && rm /etc/php/current/fpm/pool.d/www.conf \
+    && rt-rchown /etc/php/current
 
-COPY fpm /
-
-RUN rt-finalize
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID fpm /
 
 USER $RUNTIME_UID
 
@@ -63,11 +59,9 @@ ENV RUNTIME_LOG_LEVEL=1 \
 
 RUN rt-install nginx \
     && rm /etc/nginx/sites-enabled/default \
-    && chown -R $RUNTIME_UID:$RUNTIME_GID /etc/nginx /var/log/nginx /var/lib/nginx
+    && rt-rchown /etc/nginx /var/log/nginx /var/lib/nginx
 
-COPY nginx /
-
-RUN rt-finalize
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID nginx /
 
 USER $RUNTIME_UID
 
@@ -91,9 +85,7 @@ RUN rt-install openssh-server \
     && mkdir -p  /run/sshd \
     && rm -rf /etc/update-motd.d/*
 
-COPY ssh /
-
-RUN rt-finalize
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID ssh /
 
 EXPOSE 22
 
