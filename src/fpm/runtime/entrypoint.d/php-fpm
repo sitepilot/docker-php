@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
+template app.ini.tmpl /etc/php/current/fpm/conf.d/90-app.ini
 template pool.conf.tmpl /etc/php/current/fpm/pool.d/app.conf
