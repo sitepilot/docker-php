@@ -12,11 +12,11 @@ RUN $RUNTIME_BIN_DIR/install gnupg2 software-properties-common less
 
 ADD packages/php-${PHP_VERSION}.txt /tmp/packages.txt
 
-RUN add-apt-repository ppa:ondrej/php; \
-    mkdir -p /etc/php/current; \
-    ln -sf /etc/php/current /etc/php/${PHP_VERSION}; \
-    $RUNTIME_BIN_DIR/install msmtp $(cat /tmp/packages.txt); \
-    chown -R $RUNTIME_UID:$RUNTIME_GID /etc/php/current/cli/conf.d
+RUN add-apt-repository ppa:ondrej/php \
+    && mkdir -p /etc/php/current \
+    && ln -sf /etc/php/current /etc/php/${PHP_VERSION} \
+    && $RUNTIME_BIN_DIR/install msmtp $(cat /tmp/packages.txt) \
+    && chown -R $RUNTIME_UID:$RUNTIME_GID /etc/php/current/cli/conf.d
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -35,10 +35,10 @@ USER root
 
 ENV RUNTIME_LOG_LEVEL=2
 
-RUN $RUNTIME_BIN_DIR/install php${PHP_VERSION}-fpm libfcgi-bin; \
-    ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm; \
-    chown -R $RUNTIME_UID:$RUNTIME_GID /etc/php/current/fpm; \
-    rm /etc/php/current/fpm/pool.d/www.conf
+RUN $RUNTIME_BIN_DIR/install php${PHP_VERSION}-fpm libfcgi-bin \
+    && ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm \
+    && chown -R $RUNTIME_UID:$RUNTIME_GID /etc/php/current/fpm \
+    && rm /etc/php/current/fpm/pool.d/www.conf
 
 COPY fpm /
 
@@ -61,9 +61,9 @@ ENV RUNTIME_LOG_LEVEL=2 \
     NGINX_FILES_DIR="$RUNTIME_WORKDIR/files" \
     NGINX_PUBLIC_DIR="/"
 
-RUN $RUNTIME_BIN_DIR/install nginx; \
-    rm /etc/nginx/sites-enabled/default; \
-    chown -R $RUNTIME_UID:$RUNTIME_GID /etc/nginx /var/log/nginx /var/lib/nginx;
+RUN $RUNTIME_BIN_DIR/install nginx \
+    && rm /etc/nginx/sites-enabled/default \
+    && chown -R $RUNTIME_UID:$RUNTIME_GID /etc/nginx /var/log/nginx /var/lib/nginx
 
 COPY nginx /
 
@@ -87,9 +87,9 @@ USER root
 ENV RUNTIME_LOG_LEVEL=2 \
     SSH_CONFIG_DIR="$RUNTIME_WORKDIR/.ssh"
 
-RUN $RUNTIME_BIN_DIR/install openssh-server; \
-    mkdir -p  /run/sshd; \
-    rm -rf /etc/update-motd.d/*
+RUN $RUNTIME_BIN_DIR/install openssh-server \
+    && mkdir -p  /run/sshd \
+    && rm -rf /etc/update-motd.d/*
 
 COPY ssh /
 
