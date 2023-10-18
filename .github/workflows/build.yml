@@ -55,7 +55,7 @@ jobs:
           platforms: linux/amd64, linux/arm64
           target: ${{ matrix.target }}
           provenance: false
-          cache-from: type=gha,scope=php-${{ matrix.target }}-${{ matrix.php }}
-          cache-to: type=gha,mode=max,scope=php-${{ matrix.target }}-${{ matrix.php }}
+          cache-from: type=gha,scope=php-${{ matrix.target }}-${{ env.VERSION }}-${{ matrix.php }}
+          cache-to: type=gha,mode=max,scope=php-${{ matrix.target }}-${{ env.VERSION }}-${{ matrix.php }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}
