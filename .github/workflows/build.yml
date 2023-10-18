@@ -18,7 +18,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.4', '8.0', '8.1', '8.2']
+        php: [ '7.4', '8.0', '8.1', '8.2' ]
+        target: [ 'cli', 'fpm', 'nginx', 'ssh' ]
+        platform: ['linux/amd64', 'linux/arm64']
 
     steps:
       - name: Checkout code
@@ -42,68 +44,17 @@ jobs:
           export BRANCH=${GITHUB_REF##*/}
           echo "VERSION=v${BRANCH/.x/}" >> $GITHUB_ENV
 
-      - name: Build and push php-cli image
+      - name: Build image
         uses: docker/build-push-action@v5
         with:
           context: ./src
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/sitepilot/php-cli:${{ matrix.php }}
-            ghcr.io/sitepilot/php-cli:${{ env.VERSION }}-${{ matrix.php }}
-          platforms: linux/amd64, linux/arm64
-          target: cli
-          provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}
-
-      - name: Build and push php-fpm image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./src
-          pull: true
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/sitepilot/php-fpm:${{ matrix.php }}
-            ghcr.io/sitepilot/php-fpm:${{ env.VERSION }}-${{ matrix.php }}
-          platforms: linux/amd64, linux/arm64
-          target: fpm
-          provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}
-
-      - name: Build and push php-nginx image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./src
-          pull: true
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/sitepilot/php-nginx:${{ matrix.php }}
-            ghcr.io/sitepilot/php-nginx:${{ env.VERSION }}-${{ matrix.php }}
-          platforms: linux/amd64, linux/arm64
-          target: nginx
-          provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}
-
-      - name: Build and push php-ssh image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./src
-          pull: true
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/sitepilot/php-ssh:${{ matrix.php }}
-            ghcr.io/sitepilot/php-ssh:${{ env.VERSION }}-${{ matrix.php }}
-          platforms: linux/amd64, linux/arm64
-          target: ssh
+            ghcr.io/sitepilot/php-${{ matrix.target }}:${{ matrix.php }}
+            ghcr.io/sitepilot/php-${{ matrix.target }}:${{ env.VERSION }}-${{ matrix.php }}
+          platforms: ${{ matrix.platform }}
+          target: ${{ matrix.target }}
           provenance: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
