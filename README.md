@@ -22,7 +22,8 @@ ghcr.io/sitepilot/php-nginx:8.1
 
 ## Customize an image
 
-To customize an image and avoid potential breaking changes in your container builds, use the following image naming pattern in your Dockerfile:
+To customize an image and avoid potential breaking changes in your container builds, use the following image naming
+pattern in your Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/sitepilot/php-{{variation-name}}:{{runtime-version}}-{{php-version}}
