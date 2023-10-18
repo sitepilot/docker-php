@@ -8,6 +8,8 @@ ARG PHP_VERSION=8.1
 ENV RUNTIME_LOG_LEVEL=4 \
     PHP_VERSION=${PHP_VERSION}
 
+LABEL org.opencontainers.image.source = "https://github.com/sitepilot/docker-php"
+
 RUN rt-install gnupg2 software-properties-common less msmtp unzip
 
 ADD packages/php-${PHP_VERSION}.txt /tmp/packages.txt
@@ -18,16 +20,9 @@ RUN add-apt-repository ppa:ondrej/php \
     && rt-install $(cat /tmp/packages.txt) \
     && rt-rchown /etc/php/current
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php \
-    && mv composer.phar /usr/local/bin/composer \
-    && php -r "unlink('composer-setup.php');" \
-    && composer --version
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-    && chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wp \
-    && wp --allow-root --version
+COPY --from=wordpress:cli-2 /usr/local/bin/wp /usr/local/bin/wp
 
 COPY --chown=$RUNTIME_UID:$RUNTIME_GID cli /
 
