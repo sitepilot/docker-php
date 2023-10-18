@@ -60,8 +60,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           target: cli
           provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=cli
+          cache-to: type=gha,mode=max,scope=cli
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
@@ -77,8 +77,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           target: fpm
           provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=fpm
+          cache-to: type=gha,mode=max,scope=fpm
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
@@ -94,8 +94,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           target: nginx
           provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=nginx
+          cache-to: type=gha,mode=max,scope=nginx
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
@@ -111,7 +111,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           target: ssh
           provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=ssh
+          cache-to: type=gha,mode=max,scope=ssh
           build-args: |
             PHP_VERSION=${{ matrix.php }}
