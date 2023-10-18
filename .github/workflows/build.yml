@@ -48,9 +48,9 @@ jobs:
           context: ./src
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            - ghcr.io/sitepilot/php-cli:${{ matrix.php }}
-            - ghcr.io/sitepilot/php-cli:${{ env.VERSION }}-${{ matrix.php }}
+          tags: |
+            ghcr.io/sitepilot/php-cli:${{ matrix.php }}
+            ghcr.io/sitepilot/php-cli:${{ env.VERSION }}-${{ matrix.php }}
           platforms: linux/amd64, linux/arm64
           target: cli
           provenance: false
@@ -65,9 +65,9 @@ jobs:
           context: ./src
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            - ghcr.io/sitepilot/php-fpm:${{ matrix.php }}
-            - ghcr.io/sitepilot/php-fpm:${{ env.VERSION }}-${{ matrix.php }}
+          tags: |
+            ghcr.io/sitepilot/php-fpm:${{ matrix.php }}
+            ghcr.io/sitepilot/php-fpm:${{ env.VERSION }}-${{ matrix.php }}
           platforms: linux/amd64, linux/arm64
           target: fpm
           provenance: false
@@ -82,9 +82,9 @@ jobs:
           context: ./src
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            - ghcr.io/sitepilot/php-nginx:${{ matrix.php }}
-            - ghcr.io/sitepilot/php-nginx:${{ env.VERSION }}-${{ matrix.php }}
+          tags: |
+            ghcr.io/sitepilot/php-nginx:${{ matrix.php }}
+            ghcr.io/sitepilot/php-nginx:${{ env.VERSION }}-${{ matrix.php }}
           platforms: linux/amd64, linux/arm64
           target: nginx
           provenance: false
@@ -99,9 +99,9 @@ jobs:
           context: ./src
           pull: true
           push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            - ghcr.io/sitepilot/php-ssh:${{ matrix.php }}
-            - ghcr.io/sitepilot/php-ssh:${{ env.VERSION }}-${{ matrix.php }}
+          tags: |
+            ghcr.io/sitepilot/php-ssh:${{ matrix.php }}
+            ghcr.io/sitepilot/php-ssh:${{ env.VERSION }}-${{ matrix.php }}
           platforms: linux/amd64, linux/arm64
           target: ssh
           provenance: false
