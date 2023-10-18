@@ -76,3 +76,15 @@ The following environment variables are available to modify the configuration of
 | `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           | ✅         |         |         |
 | `NGINX_FASTCGI_PASS`         | `127.0.0.1:9000` | ✅         |         |         |
 | `NGINX_PUBLIC_DIR`           | -                | ✅         |         |         |
+
+## Variation Specific Docs
+
+### PHP-NGINX
+
+#### Add a vhost / site
+
+Custom vhosts are loaded from the `/etc/nginx/sites-enabled` folder. Mount a file with a `.conf` extension to this folder to add a custom vhost.
+
+#### Add location directive
+
+Custom location directives are loaded from the `/etc/nginx/location.d` folder. Mount a file with a `.conf` extension to this folder to add a custom location directive.
