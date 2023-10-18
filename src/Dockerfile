@@ -1,5 +1,5 @@
 # --------------- [PHP-CLI] --------------- #
-FROM ghcr.io/sitepilot/runtime:1.x AS cli
+FROM ghcr.io/sitepilot/runtime:v1 AS cli
 
 USER root
 
