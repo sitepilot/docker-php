@@ -83,8 +83,10 @@ The following environment variables are available to modify the configuration of
 
 #### Add a vhost / site
 
-Custom vhosts are loaded from the `/etc/nginx/sites-enabled` folder. Mount a file with a `.conf` extension to this folder to add a custom vhost.
+Custom vhosts are loaded from the `/etc/nginx/sites-enabled` folder. Mount a file with a `.conf` extension to this
+folder to add a custom vhost.
 
 #### Add location directive
 
-Custom location directives are loaded from the `/etc/nginx/location.d` folder. Mount a file with a `.conf` extension to this folder to add a custom location directive.
+Custom location directives are loaded from the `/etc/nginx/location.d` folder. Mount a file with a `.conf` extension to
+this folder to add a custom location directive.
