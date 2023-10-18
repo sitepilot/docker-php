@@ -53,6 +53,8 @@ The following PHP versions variations are available:
 * PHP 8.1
 * PHP 8.2
 
+You can find a list of installed PHP extensions for each PHP version [here](./src/packages).
+
 ## Environment
 
 The following environment variables are available to modify the configuration of an image:
