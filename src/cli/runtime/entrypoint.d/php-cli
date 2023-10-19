@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-template app.ini.tmpl /etc/php/current/cli/conf.d/90-app.ini

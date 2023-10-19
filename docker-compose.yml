@@ -22,6 +22,16 @@ services:
       - 8080:80
       - 8443:443
 
+  php-ols:
+    image: ghcr.io/sitepilot/php-ols:8.1
+    build:
+      context: ./src
+      target: ols
+    ports:
+      - 9080:80
+      - 9443:443
+      - 9070:7080
+
   php-ssh:
     image: ghcr.io/sitepilot/php-ssh:8.1
     build:

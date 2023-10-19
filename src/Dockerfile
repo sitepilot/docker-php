@@ -1,4 +1,5 @@
 # --------------- [PHP-CLI] --------------- #
+
 FROM ghcr.io/sitepilot/runtime:v1 AS cli
 
 USER root
@@ -24,11 +25,12 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY --from=wordpress:cli-2 /usr/local/bin/wp /usr/local/bin/wp
 
-COPY --chown=$RUNTIME_UID:$RUNTIME_GID cli /
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-cli /
 
 USER $RUNTIME_UID
 
 # --------------- [PHP-FPM] --------------- #
+
 FROM cli AS fpm
 
 USER root
@@ -40,15 +42,16 @@ RUN rt-install php${PHP_VERSION}-fpm libfcgi-bin \
     && rm /etc/php/current/fpm/pool.d/www.conf \
     && rt-rchown /etc/php/current
 
-COPY --chown=$RUNTIME_UID:$RUNTIME_GID fpm /
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-fpm /
 
 USER $RUNTIME_UID
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm"]
+CMD ["/usr/sbin/php-fpm", "-F"]
 
 # --------------- [PHP-NGINX] --------------- #
+
 FROM fpm AS nginx
 
 USER root
@@ -63,7 +66,7 @@ RUN rt-install nginx \
     && rm /etc/nginx/sites-enabled/default \
     && rt-rchown /etc/nginx /var/log/nginx /var/lib/nginx
 
-COPY --chown=$RUNTIME_UID:$RUNTIME_GID nginx /
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-nginx /
 
 USER $RUNTIME_UID
 
@@ -73,9 +76,38 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["/php-nginx"]
+CMD ["php-nginx"]
+
+# --------------- [PHP-OLS] --------------- #
+FROM fpm as ols
+
+USER root
+
+ENV OLS_LOGS_DIR="$RUNTIME_WORKDIR/logs" \
+    OLS_CERTS_DIR="$RUNTIME_WORKDIR/certs" \
+    OLS_FILES_DIR="$RUNTIME_WORKDIR/files" \
+    OLS_PUBLIC_DIR="/"
+
+RUN wget -O /etc/apt/trusted.gpg.d/lst_debian_repo.gpg http://rpms.litespeedtech.com/debian/lst_debian_repo.gpg \
+    && wget -O /etc/apt/trusted.gpg.d/lst_repo.gpg http://rpms.litespeedtech.com/debian/lst_repo.gpg \
+    && echo "deb http://rpms.litespeedtech.com/debian/ jammy main" > /etc/apt/sources.list.d/lst_debian_repo.list \
+    && rt-install openlitespeed \
+    && rt-rchown /usr/local/lsws
+
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-ols /
+
+USER $RUNTIME_UID
+
+WORKDIR $OLS_FILES_DIR
+
+EXPOSE 80
+
+EXPOSE 443
+
+CMD ["php-ols"]
 
 # --------------- [PHP-SSH] --------------- #
+
 FROM cli AS ssh
 
 USER root
@@ -87,7 +119,7 @@ RUN rt-install openssh-server \
     && mkdir -p  /run/sshd \
     && rm -rf /etc/update-motd.d/*
 
-COPY --chown=$RUNTIME_UID:$RUNTIME_GID ssh /
+COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-ssh /
 
 EXPOSE 22
 

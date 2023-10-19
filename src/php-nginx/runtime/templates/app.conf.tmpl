@@ -20,7 +20,7 @@ server {
 
   charset utf-8;
 
-  client_max_body_size {{ default .Env.NGINX_CLIENT_MAX_BODY_SIZE "100M" }};
+  client_max_body_size {{ default .Env.PHP_UPLOAD_MAX_FILESIZE "100M" }};
 
   include server.d/*.conf;
 
@@ -36,12 +36,10 @@ server {
 
   location /-/ping {
     access_log off;
-
     fastcgi_read_timeout 5s;
-
     include        fastcgi_params;
-    fastcgi_param  SCRIPT_NAME     /ping;
-    fastcgi_param  SCRIPT_FILENAME /ping;
+    fastcgi_param  SCRIPT_NAME     /-/ping;
+    fastcgi_param  SCRIPT_FILENAME /-/ping;
     fastcgi_pass   {{ default .Env.NGINX_FASTCGI_PASS "127.0.0.1:9000" }};
   }
 

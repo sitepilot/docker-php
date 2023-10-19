@@ -29,8 +29,6 @@ error_log /dev/stderr warn;
 # Default: nginx.pid
 pid {{ .Env.RUNTIME_RUN_DIR }}/nginx.pid;
 
-daemon off;
-
 http {
   # Hide nginx version information.
   # Default: on
