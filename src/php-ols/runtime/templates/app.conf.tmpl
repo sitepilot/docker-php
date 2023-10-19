@@ -4,8 +4,12 @@ context /-/ping {
   type                    fcgi
   handler                 php-fpm
   addDefaultCharset       off
+  rewrite  {
+    enable              0
+    inherit             0
+  }
 }
-
+s
 rewrite  {
   enable                  1
   autoLoadHtaccess        1
