@@ -36,12 +36,10 @@ server {
 
   location /-/ping {
     access_log off;
-
     fastcgi_read_timeout 5s;
-
     include        fastcgi_params;
-    fastcgi_param  SCRIPT_NAME     /ping;
-    fastcgi_param  SCRIPT_FILENAME /ping;
+    fastcgi_param  SCRIPT_NAME     /-/ping;
+    fastcgi_param  SCRIPT_FILENAME /-/ping;
     fastcgi_pass   {{ default .Env.NGINX_FASTCGI_PASS "127.0.0.1:9000" }};
   }
 

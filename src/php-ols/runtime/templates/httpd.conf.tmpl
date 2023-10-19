@@ -106,8 +106,8 @@ accessControl  {
 extprocessor php-fpm {
   type                    fcgi
   address                 {{ default .Env.OLS_FASTCGI_PASS "127.0.0.1:9000" }}
-  maxConns                2000
-  initTimeout             60
+  maxConns                {{ default .Env.PHP_FPM_MAX_CHILDREN "20" }}
+  initTimeout             30
   retryTimeout            0
   respBuffer              0
   autoStart               0
