@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.4' ]
+        php: [ '7.4', '8.0', '8.1', '8.2' ]
 
     steps:
       - name: Checkout code
@@ -40,7 +40,7 @@ jobs:
           export BRANCH=${GITHUB_REF##*/}
           echo "VERSION=v${BRANCH/.x/}" >> $GITHUB_ENV
 
-      - name: Build php-${{ inputs.target }} image
+      - name: Build php-${{ inputs.target }} test image
         uses: docker/build-push-action@v5
         with:
           context: ./src
@@ -52,11 +52,11 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
-      - name: Test php-${{ inputs.target }} image
+      - name: Run php-${{ inputs.target }} tests
         run: ${{ inputs.tests }}
         if: ${{ inputs.tests != '' }}
 
-      - name: Push php-${{ inputs.target }} image
+      - name: Build and publish php-${{ inputs.target }} image
         uses: docker/build-push-action@v5
         with:
           context: ./src
