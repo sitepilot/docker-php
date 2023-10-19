@@ -56,7 +56,7 @@ jobs:
 
       - name: Test php-${{ inputs.target }} image
         run: ${{ inputs.tests }}
-        when: ${{ inputs.tests != '' }}
+        if: ${{ inputs.tests != '' }}
 
       - name: Push php-${{ inputs.target }} image
         uses: docker/build-push-action@v5
