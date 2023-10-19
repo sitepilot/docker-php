@@ -16,7 +16,6 @@ jobs:
     uses: ./.github/workflows/build-and-test-job.yml
     with:
       target: cli
-      version: ${{ matrix.php }}
       tests: |
         docker run ghcr.io/sitepilot/php-cli:build php -v
         docker run ghcr.io/sitepilot/php-cli:build wp --version
@@ -27,7 +26,6 @@ jobs:
     uses: ./.github/workflows/build-and-test-job.yml
     with:
       target: fpm
-      version: ${{ matrix.php }}
       tests: |
         docker run ghcr.io/sitepilot/php-fpm:build php-fpm --version
     secrets: inherit
@@ -36,7 +34,6 @@ jobs:
     uses: ./.github/workflows/build-and-test-job.yml
     with:
       target: nginx
-      version: ${{ matrix.php }}
       tests: |
         docker run ghcr.io/sitepilot/php-nginx:build nginx -v
         docker run ghcr.io/sitepilot/php-nginx:build nginx -t
@@ -46,7 +43,6 @@ jobs:
     uses: ./.github/workflows/build-and-test-job.yml
     with:
       target: ssh
-      version: ${{ matrix.php }}
       tests: |
         docker run ghcr.io/sitepilot/php-ssh:build ssh -V
     secrets: inherit

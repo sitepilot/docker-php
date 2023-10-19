@@ -4,9 +4,6 @@ on:
       target:
         required: true
         type: string
-      version:
-        required: true
-        type: string
       tests:
         required: false
         type: string
@@ -50,9 +47,9 @@ jobs:
           pull: true
           tags: ghcr.io/sitepilot/php-${{ inputs.target }}:build
           target: ${{ inputs.target }}
-          cache-from: type=gha,scope=php-${{ inputs.target }}-${{ env.VERSION }}-${{ inputs.version }}
+          cache-from: type=gha,scope=php-${{ inputs.target }}-${{ env.VERSION }}-${{ matrix.php }}
           build-args: |
-            PHP_VERSION=${{ inputs.version }}
+            PHP_VERSION=${{ matrix.php }}
 
       - name: Test php-${{ inputs.target }} image
         run: ${{ inputs.tests }}
@@ -64,11 +61,11 @@ jobs:
           context: ./src
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/sitepilot/php-${{ inputs.target }}:${{ inputs.version }}
-            ghcr.io/sitepilot/php-${{ inputs.target }}:${{ env.VERSION }}-${{ inputs.version }}
+            ghcr.io/sitepilot/php-${{ inputs.target }}:${{ matrix.php }}
+            ghcr.io/sitepilot/php-${{ inputs.target }}:${{ env.VERSION }}-${{ matrix.php }}
           platforms: linux/amd64, linux/arm64
           target: ${{ inputs.target }}
           provenance: false
-          cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ env.VERSION }}-${{ inputs.version }}
+          cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ env.VERSION }}-${{ matrix.php }}
           build-args: |
-            PHP_VERSION=${{ inputs.version }}
+            PHP_VERSION=${{ matrix.php }}
