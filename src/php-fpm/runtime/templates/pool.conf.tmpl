@@ -15,9 +15,6 @@ error_log = /proc/self/fd/2
 ; This helps avoiding 502's
 process_control_timeout = 30
 
-; Do not daemonize (eg send process to the background)
-daemonize = no
-
 [app]
 ; Access from webserver container is via network, not socket file
 listen = [::]:9000

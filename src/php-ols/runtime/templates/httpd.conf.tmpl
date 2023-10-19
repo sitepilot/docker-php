@@ -55,7 +55,6 @@ tuning  {
   brStaticCompressLevel   6
   gzipMaxFileSize         10M
   gzipMinFileSize         300
-
   quicEnable              1
   quicShmDir              /dev/shm
 }
@@ -104,29 +103,18 @@ accessControl  {
   allow                   ALL
 }
 
-extprocessor lsphp {
-  type                    lsapi
-  address                 uds://tmp/lshttpd/lsphp.sock
-  maxConns                {{ default .Env.PHP_PM_MAX_CHILDREN "20" }}
-  env                     PHP_LSAPI_CHILDREN={{ default .Env.PHP_PM_MAX_CHILDREN "20" }}
+extprocessor php-fpm {
+  type                    fcgi
+  address                 {{ default .Env.OLS_FASTCGI_PASS "127.0.0.1:9000" }}
+  maxConns                2000
   initTimeout             60
   retryTimeout            0
-  persistConn             1
   respBuffer              0
-  autoStart               2
-  path                    /usr/local/lsws/lsphp{{ replace .Env.PHP_VERSION "." "" 1 }}/bin/lsphp
-  backlog                 100
-  instances               1
-  runOnStartUp            2
-  priority                0
-  memSoftLimit            2047M
-  memHardLimit            2047M
-  procSoftLimit           1400
-  procHardLimit           1500
+  autoStart               0
 }
 
 scripthandler  {
-  add                     lsapi:lsphp php
+  add                     fcgi:php-fpm php
 }
 
 module cache {

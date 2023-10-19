@@ -41,11 +41,12 @@ FROM ghcr.io/sitepilot/php-nginx:v1-8.2
 
 The following Docker image variations are available:
 
-* PHP CLI - `ghcr.io/sitepilot/php-cli:{{version}}`
-* PHP FPM - `ghcr.io/sitepilot/php-fpm:{{version}}`
-* PHP FPM & NGINX - `ghcr.io/sitepilot/php-nginx:{{version}}`
-* PHP & OpenLiteSpeed - `ghcr.io/sitepilot/php-ols:{{version}}`
-* PHP & OpenSSH Server - `ghcr.io/sitepilot/php-ssh:{{version}}`
+| Image                         | Description                            |
+|-------------------------------|----------------------------------------|
+| `ghcr.io/sitepilot/php-cli`   | PHP command line interface.            |
+| `ghcr.io/sitepilot/php-fpm`   | PHP with PHP-FPM.                      |
+| `ghcr.io/sitepilot/php-nginx` | PHP-FPM with Nginx web server.         |
+| `ghcr.io/sitepilot/php-ols`   | PHP-FPM with OpenLitespeed web server. |
 
 ## Versions
 
@@ -62,26 +63,31 @@ You can find a list of installed PHP extensions for each PHP version [here](./sr
 
 The following environment variables are available to modify the configuration of an image:
 
-| Name                         | Value            | PHP-NGINX | PHP-FPM | PHP-OLS | PHP-CLI |
-|------------------------------|------------------|-----------|---------|---------|---------|
-| `PHP_DATE_TIMEZONE`          | `UTC`            | ✅         | ✅       | ✅       | ✅       |
-| `PHP_MEMORY_LIMIT`           | `256M`           | ✅         | ✅       | ✅       | ✅       |
-| `PHP_MAX_EXECUTION_TIME`     | `300`            | ✅         | ✅       | ✅       | ✅       |
-| `PHP_MAX_INPUT_VARS`         | `10000`          | ✅         | ✅       | ✅       | ✅       |
-| `PHP_FPM_CONTROL`            | `dynamic`        | ✅         | ✅       |         |         |
-| `PHP_FPM_MAX_CHILDREN`       | `20`             | ✅         | ✅       |         |         |
-| `PHP_FPM_START_SERVERS`      | `2`              | ✅         | ✅       |         |         |
-| `PHP_FPM_MIN_SPARE_SERVERS`  | `1`              | ✅         | ✅       |         |         |
-| `PHP_FPM_MAX_SPARE_SERVERS`  | `3`              | ✅         | ✅       |         |         |
-| `PHP_POST_MAX_SIZE`          | `100M`           | ✅         |         | ✅       |         |
-| `PHP_UPLOAD_MAX_FILESIZE`    | `100M`           | ✅         |         | ✅       |         |
-| `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           | ✅         |         |         |         |
-| `NGINX_FASTCGI_PASS`         | `127.0.0.1:9000` | ✅         |         |         |         |
-| `NGINX_PUBLIC_DIR`           | -                | ✅         |         |         |         |
+| Name                        | Value     | php-nginx | php-ols | php-fpm | php-cli |
+|-----------------------------|-----------|-----------|---------|---------|---------|
+| `PHP_DATE_TIMEZONE`         | `UTC`     | ✅         | ✅       | ✅       | ✅       |
+| `PHP_MEMORY_LIMIT`          | `256M`    | ✅         | ✅       | ✅       | ✅       |
+| `PHP_MAX_EXECUTION_TIME`    | `300`     | ✅         | ✅       | ✅       | ✅       |
+| `PHP_MAX_INPUT_VARS`        | `10000`   | ✅         | ✅       | ✅       | ✅       |
+| `PHP_FPM_CONTROL`           | `dynamic` | ✅         | ✅       | ✅       |         |
+| `PHP_FPM_MAX_CHILDREN`      | `20`      | ✅         | ✅       | ✅       |         |
+| `PHP_FPM_START_SERVERS`     | `2`       | ✅         | ✅       | ✅       |         |
+| `PHP_FPM_MIN_SPARE_SERVERS` | `1`       | ✅         | ✅       | ✅       |         |
+| `PHP_FPM_MAX_SPARE_SERVERS` | `3`       | ✅         | ✅       | ✅       |         |
+| `PHP_POST_MAX_SIZE`         | `100M`    | ✅         | ✅       |         |         |
+| `PHP_UPLOAD_MAX_FILESIZE`   | `100M`    | ✅         | ✅       |         |         |
 
 ## Variation Specific Docs
 
 ### PHP-NGINX
+
+#### Environment
+
+| Name                         | Value            |
+|------------------------------|------------------|
+| `NGINX_PUBLIC_DIR`           | -                |
+| `NGINX_FASTCGI_PASS`         | `127.0.0.1:9000` |
+| `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           |
 
 #### Add a vhost / site
 
@@ -92,3 +98,12 @@ folder to add a custom vhost.
 
 Custom location directives are loaded from the `/etc/nginx/location.d` folder. Mount a file with a `.conf` extension to
 this folder to add a custom location directive.
+
+### PHP-OLS
+
+#### Environment
+
+| Name                 | Value            |
+|----------------------|------------------|
+| `OLS_PUBLIC_DIR`     | -                |
+| `OLS_FASTCGI_PASS` | `127.0.0.1:9000` |
