@@ -103,7 +103,7 @@ this folder to add a custom location directive.
 
 #### Environment
 
-| Name                 | Value            |
-|----------------------|------------------|
-| `OLS_PUBLIC_DIR`     | -                |
+| Name               | Value            |
+|--------------------|------------------|
+| `OLS_PUBLIC_DIR`   | -                |
 | `OLS_FASTCGI_PASS` | `127.0.0.1:9000` |
