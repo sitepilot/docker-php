@@ -44,10 +44,12 @@ The following Docker image variations are available:
 * PHP CLI - `ghcr.io/sitepilot/php-cli:{{version}}`
 * PHP FPM - `ghcr.io/sitepilot/php-fpm:{{version}}`
 * PHP FPM & NGINX - `ghcr.io/sitepilot/php-nginx:{{version}}`
+* PHP & OpenLiteSpeed - `ghcr.io/sitepilot/php-ols:{{version}}`
+* PHP & OpenSSH Server - `ghcr.io/sitepilot/php-ssh:{{version}}`
 
 ## Versions
 
-The following PHP versions variations are available:
+The following PHP versions are available:
 
 * PHP 7.4
 * PHP 8.0
@@ -60,22 +62,22 @@ You can find a list of installed PHP extensions for each PHP version [here](./sr
 
 The following environment variables are available to modify the configuration of an image:
 
-| Name                         | Value            | PHP-NGINX | PHP-FPM | PHP-CLI |
-|------------------------------|------------------|-----------|---------|---------|
-| `PHP_DATE_TIMEZONE`          | `UTC`            | ✅         | ✅       | ✅       |
-| `PHP_MEMORY_LIMIT`           | `256M`           | ✅         | ✅       | ✅       |
-| `PHP_MAX_EXECUTION_TIME`     | `300`            | ✅         | ✅       | ✅       |
-| `PHP_MAX_INPUT_VARS`         | `10000`          | ✅         | ✅       | ✅       |
-| `PHP_FPM_CONTROL`            | `dynamic`        | ✅         | ✅       |         |
-| `PHP_FPM_MAX_CHILDREN`       | `20`             | ✅         | ✅       |         |
-| `PHP_FPM_START_SERVERS`      | `2`              | ✅         | ✅       |         |
-| `PHP_FPM_MIN_SPARE_SERVERS`  | `1`              | ✅         | ✅       |         |
-| `PHP_FPM_MAX_SPARE_SERVERS`  | `3`              | ✅         | ✅       |         |
-| `PHP_POST_MAX_SIZE`          | `100M`           | ✅         |         |         |
-| `PHP_UPLOAD_MAX_FILESIZE`    | `100M`           | ✅         |         |         |
-| `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           | ✅         |         |         |
-| `NGINX_FASTCGI_PASS`         | `127.0.0.1:9000` | ✅         |         |         |
-| `NGINX_PUBLIC_DIR`           | -                | ✅         |         |         |
+| Name                         | Value            | PHP-NGINX | PHP-FPM | PHP-OLS | PHP-CLI |
+|------------------------------|------------------|-----------|---------|---------|---------|
+| `PHP_DATE_TIMEZONE`          | `UTC`            | ✅         | ✅       | ✅       | ✅       |
+| `PHP_MEMORY_LIMIT`           | `256M`           | ✅         | ✅       | ✅       | ✅       |
+| `PHP_MAX_EXECUTION_TIME`     | `300`            | ✅         | ✅       | ✅       | ✅       |
+| `PHP_MAX_INPUT_VARS`         | `10000`          | ✅         | ✅       | ✅       | ✅       |
+| `PHP_FPM_CONTROL`            | `dynamic`        | ✅         | ✅       |         |         |
+| `PHP_FPM_MAX_CHILDREN`       | `20`             | ✅         | ✅       |         |         |
+| `PHP_FPM_START_SERVERS`      | `2`              | ✅         | ✅       |         |         |
+| `PHP_FPM_MIN_SPARE_SERVERS`  | `1`              | ✅         | ✅       |         |         |
+| `PHP_FPM_MAX_SPARE_SERVERS`  | `3`              | ✅         | ✅       |         |         |
+| `PHP_POST_MAX_SIZE`          | `100M`           | ✅         |         | ✅       |         |
+| `PHP_UPLOAD_MAX_FILESIZE`    | `100M`           | ✅         |         | ✅       |         |
+| `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           | ✅         |         |         |         |
+| `NGINX_FASTCGI_PASS`         | `127.0.0.1:9000` | ✅         |         |         |         |
+| `NGINX_PUBLIC_DIR`           | -                | ✅         |         |         |         |
 
 ## Variation Specific Docs
 
