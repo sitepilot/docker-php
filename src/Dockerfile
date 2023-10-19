@@ -76,7 +76,7 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["/php-nginx"]
+CMD ["php-nginx"]
 
 # --------------- [PHP-OLS] --------------- #
 FROM fpm as ols
@@ -104,7 +104,7 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["/php-ols"]
+CMD ["php-ols"]
 
 # --------------- [PHP-SSH] --------------- #
 
