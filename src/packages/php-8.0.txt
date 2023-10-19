@@ -11,3 +11,4 @@ php8.0-soap
 php8.0-sqlite3
 php8.0-xml
 php8.0-zip
+php8.0-imagick
