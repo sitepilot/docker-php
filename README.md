@@ -66,11 +66,11 @@ The following environment variables are available to modify the configuration of
 | `PHP_MEMORY_LIMIT`           | `256M`           | ✅         | ✅       | ✅       |
 | `PHP_MAX_EXECUTION_TIME`     | `300`            | ✅         | ✅       | ✅       |
 | `PHP_MAX_INPUT_VARS`         | `10000`          | ✅         | ✅       | ✅       |
-| `PHP_PM_CONTROL`             | `dynamic`        | ✅         | ✅       |         |
-| `PHP_PM_MAX_CHILDREN`        | `20`             | ✅         | ✅       |         |
-| `PHP_PM_START_SERVERS`       | `2`              | ✅         | ✅       |         |
-| `PHP_PM_MIN_SPARE_SERVERS`   | `1`              | ✅         | ✅       |         |
-| `PHP_PM_MAX_SPARE_SERVERS`   | `3`              | ✅         | ✅       |         |
+| `PHP_FPM_CONTROL`            | `dynamic`        | ✅         | ✅       |         |
+| `PHP_FPM_MAX_CHILDREN`       | `20`             | ✅         | ✅       |         |
+| `PHP_FPM_START_SERVERS`      | `2`              | ✅         | ✅       |         |
+| `PHP_FPM_MIN_SPARE_SERVERS`  | `1`              | ✅         | ✅       |         |
+| `PHP_FPM_MAX_SPARE_SERVERS`  | `3`              | ✅         | ✅       |         |
 | `PHP_POST_MAX_SIZE`          | `100M`           | ✅         |         |         |
 | `PHP_UPLOAD_MAX_FILESIZE`    | `100M`           | ✅         |         |         |
 | `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           | ✅         |         |         |
