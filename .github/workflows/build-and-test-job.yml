@@ -44,6 +44,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./src
+          load: true
           pull: true
           tags: ghcr.io/sitepilot/php-${{ inputs.target }}:build
           target: ${{ inputs.target }}
