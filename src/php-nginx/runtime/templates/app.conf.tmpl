@@ -20,7 +20,7 @@ server {
 
   charset utf-8;
 
-  client_max_body_size {{ default .Env.NGINX_CLIENT_MAX_BODY_SIZE "100M" }};
+  client_max_body_size {{ default .Env.PHP_UPLOAD_MAX_FILESIZE "100M" }};
 
   include server.d/*.conf;
 

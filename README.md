@@ -87,7 +87,6 @@ The following environment variables are available to modify the configuration of
 |------------------------------|------------------|
 | `NGINX_PUBLIC_DIR`           | -                |
 | `NGINX_FASTCGI_PASS`         | `127.0.0.1:9000` |
-| `NGINX_CLIENT_MAX_BODY_SIZE` | `100M`           |
 
 #### Add a vhost / site
 
