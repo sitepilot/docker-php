@@ -18,8 +18,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.4', '8.0', '8.1', '8.2' ]
-        target: [ 'cli', 'fpm', 'nginx', 'ssh' ]
+        php: [ '7.4' ]
 
     steps:
       - name: Checkout code
@@ -43,19 +42,37 @@ jobs:
           export BRANCH=${GITHUB_REF##*/}
           echo "VERSION=v${BRANCH/.x/}" >> $GITHUB_ENV
 
-      - name: Build php-${{ matrix.target }} image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./src
-          pull: true
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/sitepilot/php-${{ matrix.target }}:${{ matrix.php }}
-            ghcr.io/sitepilot/php-${{ matrix.target }}:${{ env.VERSION }}-${{ matrix.php }}
-          platforms: linux/amd64, linux/arm64
-          target: ${{ matrix.target }}
-          provenance: false
-          cache-from: type=gha,scope=php-${{ matrix.target }}-${{ env.VERSION }}-${{ matrix.php }}
-          cache-to: type=gha,mode=max,scope=php-${{ matrix.target }}-${{ env.VERSION }}-${{ matrix.php }}
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}
+      - php-cli:
+          uses: ./.github/workflows/build-and-test.yml
+          with:
+            target: cli
+            version: ${{ matrix.php }}
+            tests: |
+              docker run ghcr.io/sitepilot/php-cli:build php -v
+              docker run ghcr.io/sitepilot/php-cli:build wp --version
+              docker run ghcr.io/sitepilot/php-cli:build composer --version
+
+      - php-fpm:
+          uses: ./.github/workflows/build-and-test.yml
+          with:
+            target: fpm
+            version: ${{ matrix.php }}
+            tests: |
+              docker run ghcr.io/sitepilot/php-fpm:build php-fpm --version
+
+      - php-nginx:
+          uses: ./.github/workflows/build-and-test.yml
+          with:
+            target: nginx
+            version: ${{ matrix.php }}
+            tests: |
+              docker run ghcr.io/sitepilot/php-nginx:build nginx -v
+              docker run ghcr.io/sitepilot/php-nginx:build nginx -t
+
+      - php-ssh:
+          uses: ./.github/workflows/build-and-test.yml
+          with:
+            target: ssh
+            version: ${{ matrix.php }}
+            tests: |
+              docker run ghcr.io/sitepilot/php-ssh:build ssh -V
