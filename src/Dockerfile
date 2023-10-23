@@ -48,7 +48,7 @@ USER $RUNTIME_UID
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm", "-F"]
+CMD ["php-fpm", "-F"]
 
 # --------------- [PHP-NGINX] --------------- #
 
@@ -76,14 +76,15 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["php-nginx"]
+CMD ["bash", "-c", "php-fpm && nginx -g 'daemon off;'"]
 
 # --------------- [PHP-OLS] --------------- #
 FROM fpm as ols
 
 USER root
 
-ENV OLS_LOGS_DIR="$RUNTIME_WORKDIR/logs" \
+ENV PATH="$PATH:/usr/local/lsws/bin" \
+    OLS_LOGS_DIR="$RUNTIME_WORKDIR/logs" \
     OLS_CERTS_DIR="$RUNTIME_WORKDIR/certs" \
     OLS_FILES_DIR="$RUNTIME_WORKDIR/files" \
     OLS_PUBLIC_DIR="/"
@@ -104,7 +105,7 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["php-ols"]
+CMD ["bash", "-c", "php-fpm && litespeed -d"]
 
 # --------------- [PHP-SSH] --------------- #
 
