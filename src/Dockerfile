@@ -64,7 +64,8 @@ ENV RUNTIME_LOG_LEVEL=1 \
 
 RUN rt-install nginx \
     && rm /etc/nginx/sites-enabled/default \
-    && rt-rchown /etc/nginx /var/log/nginx /var/lib/nginx
+    && rt-rchown /etc/nginx /var/log/nginx /var/lib/nginx \
+    && setcap "cap_net_bind_service=+ep" /usr/sbin/nginx
 
 COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-nginx /
 
@@ -93,7 +94,8 @@ RUN wget -O /etc/apt/trusted.gpg.d/lst_debian_repo.gpg http://rpms.litespeedtech
     && wget -O /etc/apt/trusted.gpg.d/lst_repo.gpg http://rpms.litespeedtech.com/debian/lst_repo.gpg \
     && echo "deb http://rpms.litespeedtech.com/debian/ jammy main" > /etc/apt/sources.list.d/lst_debian_repo.list \
     && rt-install openlitespeed \
-    && rt-rchown /usr/local/lsws
+    && rt-rchown /usr/local/lsws \
+    && setcap "cap_net_bind_service=+ep" /usr/local/lsws/bin/openlitespeed
 
 COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-ols /
 
@@ -105,7 +107,7 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["bash", "-c", "php-fpm && litespeed -d"]
+CMD ["bash", "-c", "php-fpm && openlitespeed -d"]
 
 # --------------- [PHP-SSH] --------------- #
 
