@@ -18,7 +18,7 @@ ADD packages/php-${PHP_VERSION}.txt /tmp/packages.txt
 RUN add-apt-repository ppa:ondrej/php \
     && mkdir -p /etc/php/current \
     && ln -sf /etc/php/current /etc/php/${PHP_VERSION} \
-    && rt-install $(cat /tmp/packages.txt) \
+    && rt-install $(cat /tmp/packages.txt) rsync \
     && rt-rchown /etc/php/current
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
