@@ -144,6 +144,14 @@ http {
       default $https;
   }
 
+  # Real IP
+  {{- $ips := default .Env.NGINX_SET_REAL_IP_FROM "0.0.0.0/0" }}
+  {{- range $index, $ip := split $ips "," }}
+  set_real_ip_from  {{ $ip }};
+  {{- end }}
+  real_ip_header {{ default .Env.NGINX_REAL_IP_HEADER "X-Forwarded-For" }};
+  real_ip_recursive {{ default .Env.NGINX_REAL_IP_RECURSIVE "on" }};
+
   # Include files in the sites-enabled folder. server{} configuration files should be
   # placed in the sites-available folder, and then the configuration should be enabled
   # by creating a symlink to it in the sites-enabled folder.
