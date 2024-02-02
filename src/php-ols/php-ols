@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Start php-fpm
+php-fpm -F &
+PHP_FPM_PID=$!
+
+# Start openlitespeed
+openlitespeed -d &
+OLS_PID=$!
+
+# Stop services
+trap 'echo SIGINT; kill -s SIGINT $PHP_FPM_PID $OLS_PID' SIGINT
+trap 'echo SIGTERM; kill -s SIGTERM $PHP_FPM_PID $OLS_PID' SIGTERM
+
+# Wait for any process to exit
+wait -n
+
+# Exit with status of process that exited first
+exit $?

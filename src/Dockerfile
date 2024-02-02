@@ -37,7 +37,7 @@ USER root
 
 ENV RUNTIME_LOG_LEVEL=1
 
-RUN rt-install php${PHP_VERSION}-fpm libfcgi-bin \
+RUN rt-install php${PHP_VERSION}-fpm libfcgi-bin openssh-server \
     && ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm \
     && rm /etc/php/current/fpm/pool.d/www.conf \
     && rt-rchown /etc/php/current
@@ -77,7 +77,7 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["bash", "-c", "php-fpm && nginx -g 'daemon off;'"]
+CMD ["/php-nginx"]
 
 # --------------- [PHP-OLS] --------------- #
 FROM fpm as ols
@@ -107,7 +107,7 @@ EXPOSE 80
 
 EXPOSE 443
 
-CMD ["bash", "-c", "php-fpm && openlitespeed -d"]
+CMD ["/php-ols"]
 
 # --------------- [PHP-SSH] --------------- #
 
