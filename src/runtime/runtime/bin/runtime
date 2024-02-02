@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+source "$RUNTIME_INC_DIR/bash-functions"
+
+for file in "$RUNTIME_ENTRYPOINT_DIR"/*; do
+  if [ -f "$file" ]; then
+    source "$file"
+  fi
+done
+
+touch $RUNTIME_BOOTED_FILE
+
+exec "$@"

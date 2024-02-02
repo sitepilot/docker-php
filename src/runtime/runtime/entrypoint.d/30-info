@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+debug "Container user: ${RUNTIME_USER} (uid: $(id -u $RUNTIME_USER))"
+debug "Container group: ${RUNTIME_GROUP} (gid: $(id -g $RUNTIME_USER))"
+debug "Container workdir: $PWD"

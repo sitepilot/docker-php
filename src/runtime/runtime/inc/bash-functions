@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+function to_bool()
+{
+  if [[ $1 == 'true' || $1 == true || $1 == 1 || $1 == 'Y' || $1 == 'y' ]]; then
+    true
+  else
+    false
+  fi
+}
+
+function debug()
+{
+  if [ "$RUNTIME_LOG_LEVEL" -eq 1 ]; then
+    echo "✳️ $1" >&2
+  fi
+}
+
+function info()
+{
+  if [ "$RUNTIME_LOG_LEVEL" -le 2 ]; then
+    echo "ℹ️ $1" >&2
+  fi
+}
+
+function warning()
+{
+  if [ "$RUNTIME_LOG_LEVEL" -le 3 ]; then
+    echo "⚠️ $1" >&2
+  fi
+}
+
+function error()
+{
+  if [ "$RUNTIME_LOG_LEVEL" -le 4 ]; then
+    echo "‼️ $1" 1>&2
+  fi
+}
+
+function throw()
+{
+  EXIT_CODE=${2:-1}
+  echo "‼️ $1" 1>&2
+  exit $EXIT_CODE
+}
+
+function template()
+{
+  info "Generating $1 to $2"
+  dockerize -template $RUNTIME_TEMPLATES_DIR/$1:$2
+}
+
+function generate_certs()
+{
+  if [ ! -f $1/ssl.key ]; then
+    info "Generating self-signed SSL certificate to $1"
+    openssl req -x509 -subj "/C=NL/ST=Gelderland/L=Doetinchem/O=Sitepilot/CN=app.test" -nodes -newkey rsa:2048 -keyout $1/ssl.key -out $1/ssl.crt -days 365 &> /dev/null
+  fi
+}

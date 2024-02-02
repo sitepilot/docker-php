@@ -12,8 +12,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  runtime:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      image: runtime
+      target: runtime
+      tests: |
+        docker run ghcr.io/sitepilot/runtime:build id
+        docker run --user=root -e RUNTIME_PASSWORD=supersecret ghcr.io/sitepilot/runtime:build id app
+        docker run --user=root -e RUNTIME_UID=1001 -e RUNTIME_GID=1001 ghcr.io/sitepilot/runtime:build id app
+        docker run --user=root -e RUNTIME_USER=test-user -e RUNTIME_GROUP=test-group ghcr.io/sitepilot/runtime:build id test-user
+    secrets: inherit
+
   php-cli:
-    uses: ./.github/workflows/build-and-test-job.yml
+    uses: ./.github/workflows/build-and-test-php.yml
     with:
       target: cli
       tests: |
@@ -23,7 +35,7 @@ jobs:
     secrets: inherit
 
   php-fpm:
-    uses: ./.github/workflows/build-and-test-job.yml
+    uses: ./.github/workflows/build-and-test-php.yml
     with:
       target: fpm
       tests: |
@@ -31,7 +43,7 @@ jobs:
     secrets: inherit
 
   php-nginx:
-    uses: ./.github/workflows/build-and-test-job.yml
+    uses: ./.github/workflows/build-and-test-php.yml
     with:
       target: nginx
       tests: |
@@ -40,7 +52,7 @@ jobs:
     secrets: inherit
 
   php-ols:
-    uses: ./.github/workflows/build-and-test-job.yml
+    uses: ./.github/workflows/build-and-test-php.yml
     with:
       target: ols
       tests: |

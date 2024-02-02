@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+if [ "$EUID" -eq 0 ]; then
+  warning "Container is running as root"
+
+  if [[ ! -f $RUNTIME_BOOTED_FILE ]]; then
+    if [[ $RUNTIME_USER != "app" ]]; then
+      info "Updating user name to $RUNTIME_USER"
+      usermod -l $RUNTIME_USER app
+    fi
+
+    if [[ $RUNTIME_GROUP != "app" ]]; then
+      info "Updating group name to $RUNTIME_GROUP"
+      groupmod -n $RUNTIME_GROUP app
+    fi
+
+    if [[ $RUNTIME_UID != 1000 ]]; then
+      info "Updating UID to $RUNTIME_UID"
+      usermod -o -u "$RUNTIME_UID" "$RUNTIME_USER"
+    fi
+
+    if [[ $RUNTIME_GID != 1000 ]]; then
+      info "Updating GID to $RUNTIME_UID"
+      groupmod -o -g "$RUNTIME_GID" "$RUNTIME_GROUP"
+    fi
+
+    if [[ ! -z "$RUNTIME_PASSWORD" ]]; then
+      info "Updating user password"
+      echo "$RUNTIME_USER:$RUNTIME_PASSWORD" | chpasswd
+    fi
+  fi
+
+  rt-rchown $RUNTIME_DIR
+  rt-chown $RUNTIME_WORKDIR
+else
+  if [[ $RUNTIME_USER != "app" ]] \
+  || [[ $RUNTIME_GROUP != "app" ]] \
+  || [[ $RUNTIME_UID != 1000 ]] \
+  || [[ $RUNTIME_GID != 1000 ]]; then
+    throw "Container is not running as root, user cannot be changed."
+  fi
+fi

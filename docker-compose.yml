@@ -1,4 +1,12 @@
 services:
+  runtime:
+    image: ghcr.io/sitepilot/runtime:v1
+    profiles:
+      - donotstart
+    build:
+      context: ./src
+      target: runtime
+
   php-cli:
     image: ghcr.io/sitepilot/php-cli:8.1
     profiles:
