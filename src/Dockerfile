@@ -18,7 +18,7 @@ ADD packages/php-${PHP_VERSION}.txt /tmp/packages.txt
 RUN add-apt-repository ppa:ondrej/php \
     && mkdir -p /etc/php/current \
     && ln -sf /etc/php/current /etc/php/${PHP_VERSION} \
-    && rt-install $(cat /tmp/packages.txt) rsync openssh-client mysql-client \
+    && rt-install $(cat /tmp/packages.txt) rsync openssh-server mysql-client \
     && rt-rchown /etc/php/current
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -37,7 +37,7 @@ USER root
 
 ENV RUNTIME_LOG_LEVEL=1
 
-RUN rt-install php${PHP_VERSION}-fpm libfcgi-bin openssh-server \
+RUN rt-install php${PHP_VERSION}-fpm libfcgi-bin \
     && ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm \
     && rm /etc/php/current/fpm/pool.d/www.conf \
     && rt-rchown /etc/php/current
@@ -108,22 +108,3 @@ EXPOSE 80
 EXPOSE 443
 
 CMD ["/php-ols"]
-
-# --------------- [PHP-SSH] --------------- #
-
-FROM cli AS ssh
-
-USER root
-
-ENV RUNTIME_LOG_LEVEL=1 \
-    SSH_CONFIG_DIR="$RUNTIME_WORKDIR/.ssh"
-
-RUN rt-install openssh-server \
-    && mkdir -p  /run/sshd \
-    && rm -rf /etc/update-motd.d/*
-
-COPY --chown=$RUNTIME_UID:$RUNTIME_GID php-ssh /
-
-EXPOSE 22
-
-CMD ["/usr/sbin/sshd", "-D"]
