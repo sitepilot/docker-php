@@ -60,7 +60,6 @@ jobs:
           target: ${{ inputs.target }}
           tags: ghcr.io/sitepilot/php-${{ inputs.target }}:build
           cache-from: type=gha,scope=php-${{ inputs.target }}-${{ matrix.php }}
-          cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ matrix.php }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
