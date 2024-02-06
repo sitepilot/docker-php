@@ -3,13 +3,12 @@ name: build
 on:
   push:
     branches:
-      - 1.x
-    paths:
-      - 'src/**'
-  schedule:
-    - cron: '25 4 * * *'
+      - '1.x'
+    tags:
+      - 'v*'
   pull_request:
-  workflow_dispatch:
+    branches:
+      - '1.x'
 
 jobs:
   php-cli:

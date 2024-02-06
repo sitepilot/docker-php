@@ -35,20 +35,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get version from branch name
-        run: |
-          export BRANCH=${GITHUB_REF##*/}
-          echo "VERSION=v${BRANCH/.x/}" >> $GITHUB_ENV
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/sitepilot/php-${{ inputs.target }}
+          tags: |
+            type=ref,event=branch,prefix=${{ matrix.php }}
+            type=ref,event=pr,prefix=${{ matrix.php }}
+            type=semver,pattern={{version}},prefix=${{ matrix.php }}
+            type=semver,pattern={{major}},prefix=${{ matrix.php }}
+            type=semver,pattern={{major}}.{{minor}},prefix=${{ matrix.php }}
 
       - name: Build test image
         uses: docker/build-push-action@v5
         with:
           context: ./src
           load: true
-          pull: true
-          tags: ghcr.io/sitepilot/php-${{ inputs.target }}:build
           target: ${{ inputs.target }}
-          cache-from: type=gha,scope=php-${{ inputs.target }}-${{ env.VERSION }}-${{ matrix.php }}
+          tags: ghcr.io/sitepilot/php-${{ inputs.target }}:build
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
@@ -60,13 +68,13 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./src
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/sitepilot/php-${{ inputs.target }}:${{ matrix.php }}
-            ghcr.io/sitepilot/php-${{ inputs.target }}:${{ env.VERSION }}-${{ matrix.php }}
-          platforms: linux/amd64, linux/arm64
           target: ${{ inputs.target }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64, linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           provenance: false
-          cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ env.VERSION }}-${{ matrix.php }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}

@@ -20,21 +20,30 @@ For example, if you wish to run **PHP 8.2** with **FPM** & **NGINX**, use the fo
 ghcr.io/sitepilot/php-nginx:8.1
 ```
 
-## Customize an image
+### Customization
 
-To customize an image and avoid potential breaking changes in your container builds, use the following image naming
-pattern in your Dockerfile:
+To use this image as a base image and avoid potential breaking changes in your container builds, use the following
+image naming pattern in your `Dockerfile`:
 
 ```Dockerfile
-FROM ghcr.io/sitepilot/php-{{variation-name}}:{{runtime-version}}-{{php-version}}
+FROM ghcr.io/sitepilot/php-{{variation-name}}:{{php-version}}-{{release-version}}
 ```
 
-For example, if you wish to customize the **PHP 8.2** with **FPM** & **NGINX** image, which is built upon
-the [Runtime V1](https://github.com/sitepilot/docker-runtime/tree/1.x) image (Ubuntu 22.04 LTS), include the
-following `FROM` line in your Dockerfile:
+The images are tagged according to Semantic Versioning (SemVer). Available releases can be found on the [releases page](https://github.com/sitepilot/docker-php/releases). For example, if you wish to customize version 1.x of the image:
 
 ```Dockerfile
-FROM ghcr.io/sitepilot/php-nginx:v1-8.2
+# Guaranteed backward compatibility, new features and bug fixes.
+FROM ghcr.io/sitepilot/php-nginx:8.2-1
+```
+
+```Dockerfile
+# Guaranteed backward compatibility and bug fixes.
+FROM ghcr.io/sitepilot/php-nginx:8.2-1.0
+```
+
+```Dockerfile
+# Guaranteed backward compatibility and no updates.
+FROM ghcr.io/sitepilot/php-nginx:8.2-1.0.0
 ```
 
 ## Variations
