@@ -41,12 +41,15 @@ jobs:
         with:
           images: |
             ghcr.io/sitepilot/php-${{ inputs.target }}
+          flavor: |
+            latest=false
+            prefix=${{ matrix.php }}-
           tags: |
-            type=ref,event=branch,prefix=${{ matrix.php }}-
-            type=ref,event=pr,prefix=pr-${{ matrix.php }}-
-            type=semver,pattern={{version}},prefix=${{ matrix.php }}-
-            type=semver,pattern={{major}},prefix=${{ matrix.php }}-
-            type=semver,pattern={{major}}.{{minor}},prefix=${{ matrix.php }}-
+            type=ref,event=pr
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Build test image
         uses: docker/build-push-action@v5
