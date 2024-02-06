@@ -43,13 +43,12 @@ jobs:
             ghcr.io/sitepilot/php-${{ inputs.target }}
           flavor: |
             latest=false
-            prefix=${{ matrix.php }}-
           tags: |
-            type=ref,event=pr
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=ref,event=pr,prefix=${{ matrix.php }}-
+            type=ref,event=branch,prefix=${{ matrix.php }}-
+            type=semver,pattern={{version}},prefix=${{ matrix.php }}-
+            type=semver,pattern={{major}},prefix=${{ matrix.php }}-
+            type=semver,pattern={{major}}.{{minor}},prefix=${{ matrix.php }}-
             type=raw,enable={{is_default_branch}},value=${{ matrix.php }}
 
       - name: Build test image
