@@ -4,7 +4,7 @@ FROM ghcr.io/sitepilot/runtime:1 AS cli
 
 USER root
 
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.3
 
 ENV RUNTIME_LOG_LEVEL=4 \
     PHP_VERSION=${PHP_VERSION}

@@ -1,6 +1,6 @@
 services:
   php-cli:
-    image: ghcr.io/sitepilot/php-cli:8.1
+    image: ghcr.io/sitepilot/php-cli:8.3
     profiles:
       - donotstart
     build:
@@ -8,13 +8,13 @@ services:
       target: cli
 
   php-fpm:
-    image: ghcr.io/sitepilot/php-fpm:8.1
+    image: ghcr.io/sitepilot/php-fpm:8.3
     build:
       context: ./src
       target: fpm
 
   php-nginx:
-    image: ghcr.io/sitepilot/php-nginx:8.1
+    image: ghcr.io/sitepilot/php-nginx:8.3
     build:
       context: ./src
       target: nginx
@@ -23,7 +23,7 @@ services:
       - 8443:443
 
   php-ols:
-    image: ghcr.io/sitepilot/php-ols:8.1
+    image: ghcr.io/sitepilot/php-ols:8.3
     build:
       context: ./src
       target: ols

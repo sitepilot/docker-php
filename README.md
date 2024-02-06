@@ -14,10 +14,10 @@ utilize this image naming pattern in any of your projects:
 ghcr.io/sitepilot/php-{{variation-name}}:{{php-version}}
 ```
 
-For example, if you wish to run **PHP 8.2** with **FPM** & **NGINX**, use the following image name:
+For example, if you wish to run **PHP 8.3** with **FPM** & **NGINX**, use the following image name:
 
 ```bash
-ghcr.io/sitepilot/php-nginx:8.1
+ghcr.io/sitepilot/php-nginx:8.3
 ```
 
 ### Customization
@@ -29,21 +29,21 @@ image naming pattern in your `Dockerfile`:
 FROM ghcr.io/sitepilot/php-{{variation-name}}:{{php-version}}-{{release-version}}
 ```
 
-The images are tagged according to Semantic Versioning (SemVer). Available releases can be found on the [releases page](https://github.com/sitepilot/docker-php/releases). For example, if you wish to customize version 1.x of the image:
+The images are tagged according to Semantic Versioning (SemVer). Available releases can be found on the [releases page](https://github.com/sitepilot/docker-php/releases). For example, if you wish to customize the **PHP 8.3** with **FPM** & **NGINX** image:
 
 ```Dockerfile
 # Guaranteed backward compatibility, new features and bug fixes.
-FROM ghcr.io/sitepilot/php-nginx:8.2-1
+FROM ghcr.io/sitepilot/php-nginx:8.3-1
 ```
 
 ```Dockerfile
 # Guaranteed backward compatibility and bug fixes.
-FROM ghcr.io/sitepilot/php-nginx:8.2-1.0
+FROM ghcr.io/sitepilot/php-nginx:8.3-1.0
 ```
 
 ```Dockerfile
 # Guaranteed backward compatibility and no updates.
-FROM ghcr.io/sitepilot/php-nginx:8.2-1.0.0
+FROM ghcr.io/sitepilot/php-nginx:8.3-1.0.0
 ```
 
 ## Variations
@@ -65,6 +65,7 @@ The following PHP versions are available:
 * PHP 8.0
 * PHP 8.1
 * PHP 8.2
+* PHP 8.3
 
 You can find a list of installed PHP extensions for each PHP version [here](./src/packages).
 
