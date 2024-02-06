@@ -58,8 +58,8 @@ jobs:
           load: true
           target: ${{ inputs.target }}
           tags: ghcr.io/sitepilot/php-${{ inputs.target }}:build
-          cache-from: ghcr.io/sitepilot/php-${{ inputs.target }}:${{ matrix.php }}-1.x
-          #cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ matrix.php }}
+          cache-from: type=gha,scope=php-${{ inputs.target }}-${{ matrix.php }}
+          cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ matrix.php }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
@@ -76,8 +76,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64, linux/arm64
-          cache-from: ghcr.io/sitepilot/php-${{ inputs.target }}:${{ matrix.php }}-1.x
-          #cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ matrix.php }}
+          cache-from: type=gha,scope=php-${{ inputs.target }}-${{ matrix.php }}
+          cache-to: type=gha,mode=max,scope=php-${{ inputs.target }}-${{ matrix.php }}
           provenance: false
           build-args: |
             PHP_VERSION=${{ matrix.php }}
