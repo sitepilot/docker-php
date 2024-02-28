@@ -108,3 +108,14 @@ EXPOSE 80
 EXPOSE 443
 
 CMD ["/php-ols"]
+
+# --------------- [PHP-SSH] --------------- #
+FROM cli as ssh
+
+USER root
+
+RUN rt-install openssh-sftp-server
+
+COPY --from=containerssh/agent /usr/bin/containerssh-agent /usr/bin/containerssh-agent
+
+USER $RUNTIME_UID

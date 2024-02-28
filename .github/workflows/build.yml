@@ -43,8 +43,11 @@ jobs:
     with:
       target: ols
       tests: |
-        docker run ghcr.io/sitepilot/php-ols:build php -v
-        docker run ghcr.io/sitepilot/php-ols:build wp --version
-        docker run ghcr.io/sitepilot/php-ols:build composer --version
         docker run ghcr.io/sitepilot/php-ols:build /usr/local/lsws/bin/litespeed -v
+    secrets: inherit
+
+  php-ssh:
+    uses: ./.github/workflows/build-and-test-job.yml
+    with:
+      target: ssh
     secrets: inherit

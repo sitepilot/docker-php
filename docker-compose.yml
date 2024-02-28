@@ -31,3 +31,9 @@ services:
       - 9080:80
       - 9443:443
       - 9070:7080
+
+  php-ssh:
+    image: ghcr.io/sitepilot/php-ssh:8.3
+    build:
+      context: ./src
+      target: ssh
