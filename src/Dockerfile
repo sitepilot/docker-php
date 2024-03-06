@@ -114,7 +114,7 @@ FROM cli as ssh
 
 USER root
 
-RUN rt-install openssh-sftp-server
+RUN rt-install openssh-sftp-server rsync restic mysql-client
 
 COPY --from=containerssh/agent /usr/bin/containerssh-agent /usr/bin/containerssh-agent
 
